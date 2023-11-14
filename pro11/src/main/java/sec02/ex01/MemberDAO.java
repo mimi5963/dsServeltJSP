@@ -117,7 +117,7 @@ public class MemberDAO {
 		try {
 		String sql="select * from T_MEMBER";
 		if(_name!=null && _name.length() !=0) {
-			sql += " where name=?";
+			sql += " where name Like '%' || ? || '%' "; //이렇게 추가하는 거 좋다 + like쓰는법
 			psmt = con.prepareStatement(sql);
 			psmt.setString(1, _name);
 			

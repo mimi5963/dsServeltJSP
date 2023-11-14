@@ -21,7 +21,7 @@ public class MemberServlet extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		response.setContentType("text/html;charset=utf-8");
+		response.setCharacterEncoding("utf-8");
 		PrintWriter pw = response.getWriter();
 		
 		MemberDAO  dao = new MemberDAO();
@@ -29,6 +29,7 @@ public class MemberServlet extends HttpServlet {
 		List<MemberVO> memberList = dao.listMembers();
 		
 	
+		//다형성 
 		
 		pw.print("<html>");
 		pw.print("<body>");

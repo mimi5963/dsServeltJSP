@@ -2,24 +2,39 @@ package sec01.ex01;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
+
 public class MemberDAO {
 	private Statement stmt;
 	private Connection con;
 	
+	private DataSource dataFactory;
+	private PreparedStatement psmt;
 	
 	private void connDB() {
 		try {
-			Class.forName("oracle.jdbc.OracleDriver");
-			//커넥션
-			con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","TESTUSER2","test");
-			// statement 객체
+//			Class.forName("oracle.jdbc.OracleDriver");
+//			//커넥션
+//			con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","TESTUSER2","test");
+//			// statement 객체
+			
+			
+			Context ctx = new InitialContext();
+			Context envContext = (Context)ctx.lookup("java:/comp/env");
+			dataFactory = (DataSource)envContext.lookup("jdbc/oracle");
+			con = dataFactory.getConnection();
 			stmt = con.createStatement();
+			
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -54,6 +69,45 @@ public class MemberDAO {
 		
 		return memberList;
 		
+	}
+	
+	public void addMember(MemberVO memberVO) {
+		try {
+			connDB();
+			String id = memberVO.getId();
+			String pwd = memberVO.getPwd();
+			String name = memberVO.getName();
+			String email = memberVO.getEmail();
+			
+			String sql = "INSERT INTO T_MEMBER (id,pwd,name,email) values(?,?,?,?)";
+			psmt = con.prepareStatement(sql);
+			
+			psmt.setString(1, id);
+			psmt.setString(2, pwd);
+			psmt.setString(3, name);
+			psmt.setString(4, email);
+			
+			int result =psmt.executeUpdate();
+			psmt.close();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void DeleteMember(String id) {
+		try {
+			connDB();
+			String sql = "DELETE FROM T_MEMBER WHERE id= ?";
+			psmt = con.prepareStatement(sql);
+			
+			psmt.setString(1, id);
+			psmt.executeUpdate();
+			
+			psmt.close();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	

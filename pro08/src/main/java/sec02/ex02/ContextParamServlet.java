@@ -25,6 +25,8 @@ public class ContextParamServlet extends HttpServlet {
 	   System.out.println("init 호출");
 	   String path = config.getInitParameter("configuration");
 	   System.out.println(path+"여기서호출");
+	   config.getServletContext();
+	   config.getServletName();
 	
 }
 
@@ -33,7 +35,7 @@ public class ContextParamServlet extends HttpServlet {
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter pw = response.getWriter();
 		
-		//request에서 꺼내써야함.. init메서드를 을 추가하면
+		//request에서 꺼내써야함.. init메서드를 을 추가하면 ***
 		ServletContext ctx = request.getServletContext();
 //		ServletContext ctx = getServletContext(); //왜 못불러와....
 		String menu_member = ctx.getInitParameter("menu_member");

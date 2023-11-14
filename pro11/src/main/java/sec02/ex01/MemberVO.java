@@ -17,4 +17,7 @@ public class MemberVO {
 	private String email;
 	private Date joindate;
 
+	public String getName2() {
+		return name+"님 안녕하세요";
+	}
 }

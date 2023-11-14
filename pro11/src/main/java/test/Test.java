@@ -6,5 +6,7 @@ public class Test {
 		return (n*(n+1))/2;
 	}
 	
-	
+	public static String checkDate() {
+		return "new";
+	}
 }
